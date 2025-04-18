@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="IIT Hack Regex Tester – test and debug regex patterns in real-time with flags and highlighting." />
+  <title>Regex Tester – IIT Hack</title>
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <style>
+    body {
+      background: #1e1e2f;
+      color: #f1f1f1;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .logo {
+      margin-bottom: 20px;
+    }
+    .logo img {
+      height: 60px;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background: #2c2f3a;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: 600;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      background: #383c4a;
+      color: #f1f1f1;
+      font-size: 1rem;
+    }
+    .highlighted {
+      background: #1abc9c;
+      color: #000;
+    }
+    #result {
+      background: #1f2233;
+      margin-top: 20px;
+      padding: 15px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border-radius: 6px;
+      min-height: 100px;
+      font-family: monospace;
+    }
+    .tooltip-icon {
+      cursor: help;
+      margin-left: 6px;
+      color: #4fc3f7;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">
+    <a href="https://iithack.com" target="_blank">
+      <img src="logo.png" alt="IIT Hack Logo">
+    </a>
+  </div>
+
+  <div class="container">
+    <h2>Regex Tester</h2>
+
+    <label for="pattern">Regex Pattern:</label>
+    <input type="text" id="pattern" placeholder="Enter your regex pattern here" />
+
+    <label for="flags">
+      Flags (e.g., g, i, m):
+      <span class="tooltip-icon" title="Flags:
+g - global (match all)
+i - case-insensitive
+m - multiline
+s - dot matches newline
+u - unicode
+y - sticky">ℹ️</span>
+    </label>
+    <input type="text" id="flags" placeholder="gi" />
+
+    <label for="testString">Test String:</label>
+    <textarea id="testString" rows="5" placeholder="Type the text to test here..."></textarea>
+
+    <label for="result">Matches:</label>
+    <input type="text" id="result" placeholder="Matches will appear here" readonly />
+  </div>
+
+  <script>
+    const patternInput = document.getElementById('pattern');
+    const flagsInput = document.getElementById('flags');
+    const testStringInput = document.getElementById('testString');
+    const resultInput = document.getElementById('result');
+
+    function highlightMatches(text, regex) {
+      return text.replace(regex, match => `<span class="highlighted">${match}</span>`);
+    }
+
+    function updateResult() {
+      const pattern = patternInput.value;
+      const flags = flagsInput.value;
+      const testString = testStringInput.value;
+
+      if (!pattern) return;
+
+      try {
+        const regex = new RegExp(pattern, flags);
+        const highlighted = highlightMatches(testString, regex);
+        resultInput.value = highlighted || 'No matches found';
+      } catch (e) {
+        resultInput.value = `Invalid Regex: ${e.message}`;
+      }
+    }
+
+    patternInput.addEventListener('input', updateResult);
+    flagsInput.addEventListener('input', updateResult);
+    testStringInput.addEventListener('input', updateResult);
+  </script>
+
+</body>
+</html>
